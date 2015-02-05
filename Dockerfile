@@ -1,10 +1,12 @@
-FROM ubuntu:latest
-MAINTAINER docker@noroute.de
+FROM dockerfile/java:openjdk-7-jdk
+MAINTAINER chuck@norris.com
 
-RUN apt-get update
-RUN apt-get install openjdk-7-jre-headless -y
+RUN mkdir /chuck
+ADD . /chuck
 
-ADD ./build/libs/spring-boot-helloworld-0.1.0.jar /service.jar
+WORKDIR /chuck
+
+RUN ./gradlew build --stacktrace
 
 EXPOSE 8080
-ENTRYPOINT java -jar /service.jar
+ENTRYPOINT java -jar /chuck/build/libs/spring-boot-helloworld-0.1.0.jar
